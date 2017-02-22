@@ -43,16 +43,30 @@ require_once('inc/header.inc.php');
 
 ?>
 <!-- Contenu html -->
-<h1 class="titre_formulaire">Connexion</h1>
-<form action="" method="post" style= "width: 400px; padding: 1em; border: 1px solid #CCC; border-radius: 1em;">
-	<?php echo $msg; ?>
-	<label>Pseudo :</label><br>
-	<input type="text" name="pseudo" value=""/><br><br>
+<form class="form-basic" method="post" action="#">
 
-	<label>Mot de passe :</label><br>
-	<input type="password" name="mdp" value="" /><br><br>
+		<div class="form-title-row">
+				<h1>Form Example</h1>
+		</div>
 
-  <input type="submit" value="connection" />
+		<div class="form-row">
+				<label>
+						<span>Full name</span>
+						<input type="text" name="name">
+				</label>
+		</div>
+
+		<div class="form-row">
+				<label>
+						<span>Email</span>
+						<input type="email" name="email">
+				</label>
+		</div>
+
+		<div class="form-row">
+				<button type="submit">Submit Form</button>
+		</div>
+
 </form>
 
 

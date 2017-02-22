@@ -1,0 +1,10 @@
+
+.tz-link{
+	text-decoration: none;
+	color: #fff !important;
+	font: bold 36px Arial,Helvetica,sans-serif !important;
+}
+
+.tz-link span{
+	color: #da431c;
+}
