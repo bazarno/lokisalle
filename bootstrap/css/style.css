@@ -1,0 +1,30 @@
+﻿html{
+	padding-top: 0px;
+}
+.container{
+	border: 2px solid;
+}
+.borderrouge{
+	border: 2px solid red;
+	padding: 10px;
+	min-height: 150px;
+}
+.borderverte{
+	border: 2px solid green;
+	padding: 10px;
+	min-height: 100px;
+}
+.borderbleu{
+	border: 2px solid blue;
+	padding: 10px;
+	min-height: 400px;
+}
+.borderorange{
+	border: 2px solid orange;
+	padding: 10px;
+}
+.bordernav{
+	border: 2px solid orange;
+	padding: 10px;
+	height: 50px;
+}
