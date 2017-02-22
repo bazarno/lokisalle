@@ -38,36 +38,31 @@ if($_POST){
 
 }
 
-$page = 'Connexion';
 require_once('inc/header.inc.php');
 
 ?>
 <!-- Contenu html -->
-<form class="form-basic" method="post" action="#">
-
-		<div class="form-title-row">
-				<h1>Form Example</h1>
-		</div>
-
-		<div class="form-row">
-				<label>
-						<span>Full name</span>
-						<input type="text" name="name">
-				</label>
-		</div>
-
-		<div class="form-row">
-				<label>
-						<span>Email</span>
-						<input type="email" name="email">
-				</label>
-		</div>
-
-		<div class="form-row">
-				<button type="submit">Submit Form</button>
-		</div>
-
-</form>
+<div class="formulaire">
+  <form method="post" action="">
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">Pseudo</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="pseudo" placeholder="Pseudo">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">Mot de passe</label>
+      <div class="col-sm-10">
+        <input type="password" class="form-control" name="mdp" placeholder="Mot de passe">
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="offset-sm-2 col-sm-10">
+        <button type="submit" name="connexion" class="btn btn-primary">Valider</button>
+      </div>
+    </div>
+  </form>
+</div>
 
 
 

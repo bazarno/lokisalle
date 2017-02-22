@@ -1,6 +1,6 @@
 
 <?php
-
+/*
 /////  GESTION DECONNEXION   //////
 
 if(isset($_GET['action']) && $_GET['action'] == 'deconnexion'){
@@ -16,7 +16,6 @@ if(userConnecte()){
 
 //traitement pour la connexion
 if (isset($_POST['connexion'])) {
-
 	$resultat = $pdo -> prepare("SELECT * FROM membre WHERE pseudo = :pseudo");
 	$resultat -> bindParam(':pseudo', $_POST['pseudo'], PDO::PARAM_STR);
 	$resultat -> execute();
@@ -90,7 +89,7 @@ if (isset($_POST['inscription'])) {
         }
       }
 }
-
+*/
  ?>
 
 
@@ -153,12 +152,12 @@ if (isset($_POST['inscription'])) {
                   </li>
                 <?php else : ?>
                   <li>
-										<!--<a href="connexion.php">Connexion</a>-->
-										<a href="#" data-toggle="modal" data-target="#insc-modal">Inscription</a>
+										<a href="connexion.php">Connexion</a>
+										<!--<a href="#" data-toggle="modal" data-target="#insc-modal">Inscription</a>-->
                   </li>
                   <li>
-										<!--<a href="inscription.php">Inscription</a>-->
-                    <a href="#" data-toggle="modal" data-target="#login-modal">Connexion</a>
+										<a href="inscription.php">Inscription</a>
+                    <!--<a href="#" data-toggle="modal" data-target="#login-modal">Connexion</a>-->
                   </li>
                     <?php endif; ?>
                     <?php if(userAdmin()):?>
@@ -174,14 +173,14 @@ if (isset($_POST['inscription'])) {
                   <li>
                     <a href="admin/gestion_avis.php">Gestion des avis</a>
                   </li>
-
+									<li><?php echo $msg; ?></li>
                   <?php endif; ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
     </nav>
-
+<!--
     <div class="modal fade" id="login-modal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     	<div class="modal-dialog">
         <?php //echo $msg; ?>
@@ -190,7 +189,7 @@ if (isset($_POST['inscription'])) {
     		  <form action="" method="post" >
     			<input type="text" name="user" placeholder="login">
     			<input type="password" name="pass" placeholder="mot de passe">
-    			<input type="submit" name="login" class="login loginmodal-submit" value="connexion">
+    			<input type="submit" name="connexion" class="login loginmodal-submit" value="connexion">
     		  </form>
 
     		  <div class="login-help">
@@ -232,5 +231,5 @@ if (isset($_POST['inscription'])) {
         </div>
       </div>
     </div>
-
+-->
         <section>
