@@ -25,7 +25,7 @@ else{
 	$produits = $resultat -> fetchAll(PDO::FETCH_ASSOC);
 }// dans ce else il n'y a pas de categorie dans l'url
 
-
+debug($produits);
 
 $page = 'Boutique';
 require_once('/inc/header.inc.php');

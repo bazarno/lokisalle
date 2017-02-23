@@ -2,13 +2,20 @@
 require_once('inc/init.inc.php');
 
 
+$resultat = $pdo -> query("SELECT *
+  FROM produit
+  LEFT JOIN salle
+  ON salle.id_salle = produit.id_salle ");
+$produits = $resultat -> fetchAll(PDO::FETCH_ASSOC);
+//debug($produits);
 
-$page = 'Accueil';
+
+
 require_once('inc/header.inc.php');
 ?>
 
 
-
+<section>
 <!-- Contenu html -->
 <div class="container">
   <div class="row">
@@ -16,14 +23,18 @@ require_once('inc/header.inc.php');
       <div class="col-md-3">
           <p class="lead">Categorie</p>
           <div class="list-group">
+            <form method="get" action="">
               <a href="#" class="list-group-item">Reunion</a>
               <a href="#" class="list-group-item">Bureau</a>
+            </form>
           </div>
           <p class="lead">Ville</p>
           <div class="list-group">
+            <form method="get" action="">
               <a href="#" class="list-group-item">Paris</a>
               <a href="#" class="list-group-item">Lyon</a>
               <a href="#" class="list-group-item">Bordeaux</a>
+            </form>
           </div>
       </div>
 
@@ -69,15 +80,15 @@ require_once('inc/header.inc.php');
           </div>
 
           <div class="row">
-
+            <?php foreach($produits as $valeur) : ?>
               <div class="col-sm-4 col-lg-4 col-md-4">
                   <div class="thumbnail">
-                      <img src="http://placehold.it/320x150" alt="">
+                      <a href="page_produit.php?id_produit=<?= $valeur['id_produit'] ?>"><img src="<?= RACINE_SITE ?>/photo/<?= $valeur['photo'] ?> " style="height:140px" >
                       <div class="caption">
-                          <h4 class="pull-right">$24.99</h4>
-                          <h4><a href="#">First Product</a>
-                          </h4>
-                          <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
+                          <h4 class="pull-right"><?= $valeur['prix'] ?>€</h4>
+                          <h4><a href="page_produit.php?id_produit=<?= $valeur['id_produit'] ?>"><?= $valeur['titre'] ?></a></h4>
+                          <p><?= substr($valeur['description'], 0, 80) ?>.</p>
+                          <p>disponible du <?= $valeur['date_arrivee'] ?> au <?= $valeur['date_depart'] ?></p>
                       </div>
                       <div class="ratings">
                           <p class="pull-right">15 reviews</p>
@@ -91,11 +102,12 @@ require_once('inc/header.inc.php');
                       </div>
                   </div>
               </div>
+              <?php endforeach; ?>
           </div>
       </div>
   </div>
 </div>
-
+</section>
 
 
 

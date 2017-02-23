@@ -99,11 +99,14 @@ font-size: 12px;
 
 
 .formulaire{
-  width: 50%;
+  width: 80%;
+  background-color: #fff;
+  padding: 55px 15px 15px 15px;
   min-height: 300px;
-  margin: 0 auto;
-  border-radius: 5px;
+  margin: 50px auto 0;
+  border-radius: 15px;
   border: 1px solide #ccc;
+  box-shadow: 4px 4px 10px #aaa;
 }
 
 /****************************************$$$$$$***** GENERAL *****************************************/
@@ -128,10 +131,10 @@ footer{ background: #000;
   color: white;
   text-align: center;
   padding: 7px 0;
+  margin-top: 150px;
   width:100%;
-  position:absolute;
-  bottom:0;
-  left:0;
+  position: fixed;
+  bottom: 0px;
 }
 
 section{
@@ -147,15 +150,7 @@ section{
 .cadre  h2{ background: #c0c0c0; margin: 0; text-align: center; font-size: 15px; padding: 5px; }
 .cadre  p{ padding: 10px; }
 .centre{text-align: center;}
-/************************************************ BOUTIQUE ************************************************/
-.boutique-gauche{ float: left; width: 20%; background: #f2f2f2; min-height: 500px; margin-right: 10%; padding-top: 10px; text-align: center; }
-.boutique-gauche  ul{ list-style: none; padding: 0; }
-.boutique-gauche  ul  li  a{ display: block; padding: 10px;}
-.boutique-gauche  ul  li  a:hover{ background: #04baf6; color: #fff; }
-.boutique-droite{float: left; width: 60%; }
-.boutique-produit{ float: left; width: 30%; text-align: center; padding: 5%; border-bottom: 1px solid #c0c0c0; line-height: 20px;}
-.boutique-suggest{ float: left; width: 20%; text-align: center;}
-.boutique-produit:hover{ background: #c0c0c0; }
+
 /*********************************************** BOUTIQUE *******************************************/
 
 .tit{
@@ -182,21 +177,6 @@ section{
 
 }
 
-span.bulle{
-  color: white;
-  text-align: center;
-  width: 15px;
-  height: 16px;
-  border-radius: 15px;
-  line-height: 15px;
-  vertical-align: middle;
-  background: red;
-  margin-left: 4px;
-  display: inline-block;
-  margin-right: 5px;
-  font-size: 10px;
-  font-family: arial;
-}
 
 .notation a.star{
   height: 20px;
@@ -235,4 +215,21 @@ table{ border-collapse: collapse; width: 90%; margin: 0 auto;}
 table tr td{
 text-align: center;
 }
-td, th{ padding: 5px; }
+td{ padding: 10px; }
+th{
+  padding: 10px;
+  background-color: #2d5d82;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+}
+tr:nth-child(odd) /*Toutes les lignes impaires : la 1e, la 3e, la 5e, etc.*/
+{
+background-color: #fff;
+}
+
+tr:nth-child(even) /*Toutes les lignes paires : la 2e, la 4e, la 6e, etc.*/
+{
+background-color: #cfe1ef;
+}

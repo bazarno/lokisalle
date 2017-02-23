@@ -107,103 +107,98 @@ $page = 'Gestion Membres';
 require_once('../inc/header.inc.php');
 
 ?>
-
+<section>
+<div class="container">
+		<div class="row">
+				<div class="col-md-12">
 <!-- Contenu -->
-<h1>Gestion des membres</h1>
+				<h1>Gestion des membres</h1>
 
-<ul>
-	<li><a href="?action=affichage">Afficher les membres</a></li>
-	<li><a href="?action=ajout">Ajouter un membre</a></li>
-</ul>
-<hr><br>
-<?= $msg ?>
-<?= $contenu ?>
+				<ul>
+					<li><a href="?action=affichage">Afficher les membres</a></li>
+					<li><a href="?action=ajout">Ajouter un membre</a></li>
+				</ul>
+				<hr><br>
+				<?= $msg ?>
+				<?= $contenu ?>
 
-<!-- ajouter et modifier un produit via formulaire
-si une action d'ajout OU de modification est demandée on affiche le formulaire
--->
-<?php if(isset($_GET['action']) && ($_GET['action'] == 'ajout' || $_GET['action'] == 'modifier')) : ?>
+				<!-- ajouter et modifier un produit via formulaire
+				si une action d'ajout OU de modification est demandée on affiche le formulaire
+				-->
+				<?php if(isset($_GET['action']) && ($_GET['action'] == 'ajout' || $_GET['action'] == 'modifier')) : ?>
 
-	<!-- s'il s'agit de modifier un membre on recupère ses infos via l'id dans l'url -->
-	<?php
-	if(isset($_GET['id_membre']) && is_numeric($_GET['id_membre'])){
-		$resultat = $pdo -> prepare("SELECT * FROM membre WHERE id_membre = :id_membre");
-		$resultat -> bindParam(':id_membre', $_GET['id_membre'], PDO::PARAM_INT);
-		if($resultat -> execute()){
-			$membre_actuel = $resultat -> fetch(PDO::FETCH_ASSOC);
-			//produit_actuel est un array avec toutes les infos du produit à modifier
-		}
-	}
-	//toutes les infos du produit sont stockées dans des variables
-	//si il y a un produit_actuel (à modfier) on y stocke sa valeur pour pouvoir les afficher dans le Formulaire
-	// s'il n'y a pas de produit_actuel c'est donc un ajout donc on affiche rien ('') dans la variable
-	$pseudo = (isset($membre_actuel)) ? $membre_actuel['pseudo'] : '';
-	$mdp = (isset($membre_actuel)) ? $membre_actuel['mdp'] : '';
-	$nom = (isset($membre_actuel)) ? $membre_actuel['nom'] : '';
-	$prenom = (isset($membre_actuel)) ? $membre_actuel['prenom'] : '';
-	$email = (isset($membre_actuel)) ? $membre_actuel['email'] : '';
-	$civilite = (isset($membre_actuel)) ? $membre_actuel['civilite'] : '';
-	$ville = (isset($membre_actuel)) ? $membre_actuel['ville'] : '';
-	$code_postal = (isset($membre_actuel)) ? $membre_actuel['code_postal'] : '';
-	$adresse = (isset($membre_actuel)) ? $membre_actuel['adresse'] : '';
-	$statut = (isset($membre_actuel)) ? $membre_actuel['statut'] : '';
+					<!-- s'il s'agit de modifier un membre on recupère ses infos via l'id dans l'url -->
+					<?php
+					if(isset($_GET['id_membre']) && is_numeric($_GET['id_membre'])){
+						$resultat = $pdo -> prepare("SELECT * FROM membre WHERE id_membre = :id_membre");
+						$resultat -> bindParam(':id_membre', $_GET['id_membre'], PDO::PARAM_INT);
+						if($resultat -> execute()){
+							$membre_actuel = $resultat -> fetch(PDO::FETCH_ASSOC);
+							//produit_actuel est un array avec toutes les infos du produit à modifier
+						}
+					}
+					//toutes les infos du produit sont stockées dans des variables
+					//si il y a un produit_actuel (à modfier) on y stocke sa valeur pour pouvoir les afficher dans le Formulaire
+					// s'il n'y a pas de produit_actuel c'est donc un ajout donc on affiche rien ('') dans la variable
+					$pseudo = (isset($membre_actuel)) ? $membre_actuel['pseudo'] : '';
+					$mdp = (isset($membre_actuel)) ? $membre_actuel['mdp'] : '';
+					$nom = (isset($membre_actuel)) ? $membre_actuel['nom'] : '';
+					$prenom = (isset($membre_actuel)) ? $membre_actuel['prenom'] : '';
+					$email = (isset($membre_actuel)) ? $membre_actuel['email'] : '';
+					$civilite = (isset($membre_actuel)) ? $membre_actuel['civilite'] : '';
+					$statut = (isset($membre_actuel)) ? $membre_actuel['statut'] : '';
 
-	$action = (isset($membre_actuel)) ? 'Modifier' : 'Ajouter' ;
-	$id_membre = (isset($membre_actuel)) ? $membre_actuel['id_membre'] : '';
+					$action = (isset($membre_actuel)) ? 'Modifier' : 'Ajouter' ;
+					$id_membre = (isset($membre_actuel)) ? $membre_actuel['id_membre'] : '';
 
 
-	 ?>
-<h2><?= $action ?> un membre</h2>
-<form action="" method="post">
-	<!-- encrypt permet de recuperer les fichiers uploader grace à la superglobale $_file -->
-	<input type="hidden" name="id_membre" value="<?= $id_membre ?>">
+					?>
 
-	<label>Pseudo</label><br>
-	<input type="text" name="pseudo" value="<?= $pseudo ?>"><br>
+				<h2><?= $action ?> un membre</h2>
+				<form class="formulaire" action="" method="post">
+					<!-- encrypt permet de recuperer les fichiers uploader grace à la superglobale $_file -->
+					<input type="hidden" name="id_membre" value="<?= $id_membre ?>">
 
-	<label>Mot de passe</label><br>
-	<input type="text" name="mdp" value="<?= $mdp ?>"><br>
+					<label>Pseudo</label><br>
+					<input type="text" name="pseudo" value="<?= $pseudo ?>"><br>
 
-	<label>Nom</label><br>
-	<input type="text" name="nom" value="<?= $nom ?>"><br>
+					<label>Mot de passe</label><br>
+					<input type="text" name="mdp" value="<?= $mdp ?>"><br>
 
-	<label>Prenom</label><br>
-	<input type="text" name="prenom" value="<?= $prenom ?>"><br>
+					<label>Nom</label><br>
+					<input type="text" name="nom" value="<?= $nom ?>"><br>
 
-	<label>Email</label><br>
-	<textarea name="email" rows="5" cols="40"><?= $email ?></textarea><br>
+					<label>Prenom</label><br>
+					<input type="text" name="prenom" value="<?= $prenom ?>"><br>
 
-	<label>Civilite: </label>
-		<select name="civilite">
-			<option>-- Selectionnez --</option>
-			<option <?= ($civilite == 'm') ? 'selected' : '' ?> value="m">Homme</option>
-			<option <?= ($civilite == 'f') ? 'selected' : '' ?> value="f">Femme</option>
-		</select><br/><br>
+					<label>Email</label><br>
+					<input type="text" name="email" value="<?= $email ?>"></textarea><br>
 
-	<label>Ville</label><br>
-	<input type="text" name="ville" value="<?= $ville ?>"><br>
+					<label>Civilite: </label>
+						<select name="civilite">
+							<option>-- Selectionnez --</option>
+							<option <?= ($civilite == 'm') ? 'selected' : '' ?> value="m">Homme</option>
+							<option <?= ($civilite == 'f') ? 'selected' : '' ?> value="f">Femme</option>
+						</select><br/><br>
 
-	<label>Code Postal</label><br>
-	<input type="text" name="code_postal" value="<?= $code_postal ?>"><br>
+					<label>Statut : </label>
+						<select name="statut">
+							<option>-- Selectionnez --</option>
+							<option <?= ($statut == '0') ? 'selected' : '' ?> value="0">0</option>
+							<option <?= ($statut == '1') ? 'selected' : '' ?> value="1">1</option>
+						</select><br/><br>
 
-	<label>Adresse</label><br>
-	<input type="text" name="adresse" value="<?= $adresse ?>"><br>
-
-	<label>Statut : </label>
-		<select name="statut">
-			<option>-- Selectionnez --</option>
-			<option <?= ($statut == '0') ? 'selected' : '' ?> value="0">0</option>
-			<option <?= ($statut == '1') ? 'selected' : '' ?> value="1">1</option>
-		</select><br/><br>
-
-	<input type="submit" value="<?= $action ?>">
-	<br><br>
+					<input type="submit" value="<?= $action ?>">
+					<br><br>
 
 
-</form>
+				</form>
+		</div>
+	</div>
+</div>
 
 <?php endif; ?>
-
+</section>
 
 
 <?php

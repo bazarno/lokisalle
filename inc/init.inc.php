@@ -6,7 +6,7 @@ $pdo = new PDO('mysql:host=localhost;dbname=lokisalle', 'root', '', array(PDO::A
 session_start();
 
 // Chemin
-define("RACINE_SITE","/lokisalle/");
+define("RACINE_SITE","/loki/");
 
 // Variables
 $msg = '';
