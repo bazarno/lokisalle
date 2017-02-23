@@ -103,9 +103,9 @@ font-size: 12px;
   background-color: #fff;
   padding: 55px 15px 15px 15px;
   min-height: 300px;
-  margin: 50px auto 0;
+  margin: 30px auto 0;
   border-radius: 15px;
-  border: 1px solide #ccc;
+  border: 1px solid #ccc;
   box-shadow: 4px 4px 10px #aaa;
 }
 
@@ -209,7 +209,10 @@ ul{
 
 
 /*********************************************** Formulaire*********************************************/
-
+input{
+  width: 50%;
+  border: 1px solid #ccc;
+}
 /************************************************* Table************************************************/
 table{ border-collapse: collapse; width: 90%; margin: 0 auto;}
 table tr td{

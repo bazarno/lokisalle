@@ -48,7 +48,7 @@
                     <a href="<?php echo RACINE_SITE; ?>quisommesnous.php">Qui sommes nous</a>
                   </li>
                   <li>
-                    <a href="<?php echo RACINE_SITE; ?>contact.php>Contact">Contact</a>
+                    <a href="<?php echo RACINE_SITE; ?>contact.php">Contact</a>
                   </li>
                   <?php if(userConnecte()):?>
                   <li>

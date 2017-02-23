@@ -2,16 +2,56 @@
 require_once('inc/init.inc.php');
 
 
-$resultat = $pdo -> query("SELECT *
+
+//debug($produits);
+
+$req = $pdo -> query("SELECT *
   FROM produit
   LEFT JOIN salle
   ON salle.id_salle = produit.id_salle ");
-$produits = $resultat -> fetchAll(PDO::FETCH_ASSOC);
-//debug($produits);
+
+  if(isset($_GET['action']) && $_GET['action'] == 'reunion'){
+    $req = $pdo -> query("SELECT *
+		FROM produit p, salle s
+		WHERE p.id_salle = s.id_salle
+		AND categorie = 'Réunion'");
+  }
+
+  if(isset($_GET['action']) && $_GET['action'] == 'bureau'){
+    $req = $pdo -> query("SELECT *
+		FROM produit p, salle s
+		WHERE p.id_salle = s.id_salle
+		AND categorie = 'Bureau'");
+  }
+
+  if(isset($_GET['action']) && $_GET['action'] == 'paris'){
+    $req = $pdo -> query("SELECT *
+    FROM produit p, salle s
+    WHERE p.id_salle = s.id_salle
+    AND ville = 'Paris'");
+  }
+
+  if(isset($_GET['action']) && $_GET['action'] == 'lyon'){
+    $req = $pdo -> query("SELECT *
+    FROM produit p, salle s
+    WHERE p.id_salle = s.id_salle
+    AND ville = 'Lyon'");
+  }
+
+  if(isset($_GET['action']) && $_GET['action'] == 'bordeaux'){
+    $req = $pdo -> query("SELECT *
+    FROM produit p, salle s
+    WHERE p.id_salle = s.id_salle
+    AND ville = 'Bordeaux'");
+  }
+
+  $resultat = $req ;
+  $produits = $resultat -> fetchAll(PDO::FETCH_ASSOC);
 
 
 
 require_once('inc/header.inc.php');
+
 ?>
 
 
@@ -24,16 +64,16 @@ require_once('inc/header.inc.php');
           <p class="lead">Categorie</p>
           <div class="list-group">
             <form method="get" action="">
-              <a href="#" class="list-group-item">Reunion</a>
-              <a href="#" class="list-group-item">Bureau</a>
+              <a href="?action=reunion" class="list-group-item">Reunion</a>
+              <a href="?action=bureau" class="list-group-item">Bureau</a>
             </form>
           </div>
           <p class="lead">Ville</p>
           <div class="list-group">
             <form method="get" action="">
-              <a href="#" class="list-group-item">Paris</a>
-              <a href="#" class="list-group-item">Lyon</a>
-              <a href="#" class="list-group-item">Bordeaux</a>
+              <a href="?action=paris" class="list-group-item">Paris</a>
+              <a href="?action=lyon" class="list-group-item">Lyon</a>
+              <a href="?action=bordeaux" class="list-group-item">Bordeaux</a>
             </form>
           </div>
       </div>
@@ -87,11 +127,13 @@ require_once('inc/header.inc.php');
                       <div class="caption">
                           <h4 class="pull-right"><?= $valeur['prix'] ?>€</h4>
                           <h4><a href="page_produit.php?id_produit=<?= $valeur['id_produit'] ?>"><?= $valeur['titre'] ?></a></h4>
-                          <p><?= substr($valeur['description'], 0, 80) ?>.</p>
-                          <p>disponible du <?= $valeur['date_arrivee'] ?> au <?= $valeur['date_depart'] ?></p>
+                          <p><?= substr($valeur['description'], 0, 50) ?>...</p>
+                          <p>disponible le <?= $valeur['date_arrivee'] ?><br>
+                            <?= $valeur['ville'] ?>
+                          </p>
                       </div>
                       <div class="ratings">
-                          <p class="pull-right">15 reviews</p>
+                          <p class="pull-right"><?= $valeur['categorie'] ?></p>
                           <p>
                               <span class="glyphicon glyphicon-star"></span>
                               <span class="glyphicon glyphicon-star"></span>
