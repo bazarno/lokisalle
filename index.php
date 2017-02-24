@@ -3,12 +3,59 @@ require_once('inc/init.inc.php');
 
 
 
-$page = 'Accueil';
+//debug($produits);
+
+$req = $pdo -> query("SELECT *
+  FROM produit
+  LEFT JOIN salle
+  ON salle.id_salle = produit.id_salle ");
+
+  if(isset($_GET['action']) && $_GET['action'] == 'reunion'){
+    $req = $pdo -> query("SELECT *
+		FROM produit p, salle s
+		WHERE p.id_salle = s.id_salle
+		AND categorie = 'Réunion'");
+  }
+
+  if(isset($_GET['action']) && $_GET['action'] == 'bureau'){
+    $req = $pdo -> query("SELECT *
+		FROM produit p, salle s
+		WHERE p.id_salle = s.id_salle
+		AND categorie = 'Bureau'");
+  }
+
+  if(isset($_GET['action']) && $_GET['action'] == 'paris'){
+    $req = $pdo -> query("SELECT *
+    FROM produit p, salle s
+    WHERE p.id_salle = s.id_salle
+    AND ville = 'Paris'");
+  }
+
+  if(isset($_GET['action']) && $_GET['action'] == 'lyon'){
+    $req = $pdo -> query("SELECT *
+    FROM produit p, salle s
+    WHERE p.id_salle = s.id_salle
+    AND ville = 'Lyon'");
+  }
+
+  if(isset($_GET['action']) && $_GET['action'] == 'bordeaux'){
+    $req = $pdo -> query("SELECT *
+    FROM produit p, salle s
+    WHERE p.id_salle = s.id_salle
+    AND ville = 'Bordeaux'");
+  }
+
+  $resultat = $req ;
+  $produits = $resultat -> fetchAll(PDO::FETCH_ASSOC);
+
+
+
 require_once('inc/header.inc.php');
+
 ?>
 
 
-
+<section>
 <!-- Contenu html -->
 <div class="container">
   <div class="row">
@@ -16,14 +63,18 @@ require_once('inc/header.inc.php');
       <div class="col-md-3">
           <p class="lead">Categorie</p>
           <div class="list-group">
-              <a href="#" class="list-group-item">Reunion</a>
-              <a href="#" class="list-group-item">Bureau</a>
+            <form method="get" action="">
+              <a href="?action=reunion" class="list-group-item">Reunion</a>
+              <a href="?action=bureau" class="list-group-item">Bureau</a>
+            </form>
           </div>
           <p class="lead">Ville</p>
           <div class="list-group">
-              <a href="#" class="list-group-item">Paris</a>
-              <a href="#" class="list-group-item">Lyon</a>
-              <a href="#" class="list-group-item">Bordeaux</a>
+            <form method="get" action="">
+              <a href="?action=paris" class="list-group-item">Paris</a>
+              <a href="?action=lyon" class="list-group-item">Lyon</a>
+              <a href="?action=bordeaux" class="list-group-item">Bordeaux</a>
+            </form>
           </div>
       </div>
 
@@ -69,18 +120,20 @@ require_once('inc/header.inc.php');
           </div>
 
           <div class="row">
-
+            <?php foreach($produits as $valeur) : ?>
               <div class="col-sm-4 col-lg-4 col-md-4">
                   <div class="thumbnail">
-                      <img src="http://placehold.it/320x150" alt="">
+                      <a href="page_produit.php?id_produit=<?= $valeur['id_produit'] ?>"><img src="<?= RACINE_SITE ?>/photo/<?= $valeur['photo'] ?> " style="height:140px" >
                       <div class="caption">
-                          <h4 class="pull-right">$24.99</h4>
-                          <h4><a href="#">First Product</a>
-                          </h4>
-                          <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
+                          <h4 class="pull-right"><?= $valeur['prix'] ?>€</h4>
+                          <h4><a href="page_produit.php?id_produit=<?= $valeur['id_produit'] ?>"><?= $valeur['titre'] ?></a></h4>
+                          <p><?= substr($valeur['description'], 0, 50) ?>...</p>
+                          <p>disponible le <?= $valeur['date_arrivee'] ?><br>
+                            <?= $valeur['ville'] ?>
+                          </p>
                       </div>
                       <div class="ratings">
-                          <p class="pull-right">15 reviews</p>
+                          <p class="pull-right"><?= $valeur['categorie'] ?></p>
                           <p>
                               <span class="glyphicon glyphicon-star"></span>
                               <span class="glyphicon glyphicon-star"></span>
@@ -91,11 +144,14 @@ require_once('inc/header.inc.php');
                       </div>
                   </div>
               </div>
+              <?php endforeach; ?>
           </div>
       </div>
-  </div>
-</div>
 
+  </div>
+
+</div>
+</section>
 
 
 
