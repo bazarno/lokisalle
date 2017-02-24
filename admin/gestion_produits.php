@@ -17,13 +17,10 @@ if(!userAdmin()){
 }
 
 
-if(isset($_GET['action']) && $_GET['action'] == 'affichage'){
-	//si un affichage est demandé dans l'url, on recupère les infos de tous les produits
-	// et on les affiche via des boucles dans un tableau
 	$resultat= $pdo -> query(
-    "SELECT p.*, s.photo, s.titre
-    FROM produit p, salle s
-    WHERE p.id_salle = s.id_salle"
+    "SELECT p.*, s.titre, s.photo
+  FROM salle s, produit p
+  WHERE p.id_salle = s.id_salle"
   );
 
 	$contenu .= '<table border="1">';
@@ -54,7 +51,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage'){
 
 		$contenu .= '</table>';
 
-}
+
 
 
 // ajouter et modifier un produit via formulaire
@@ -108,7 +105,6 @@ if($_POST){
 
 
 }
-/////         A finir                ///////////////////////////////////////
 
 if(isset($_GET['action']) && $_GET['action'] == 'supprimer' ){
 	if(isset($_GET['id_produit']) && is_numeric($_GET['id_produit'])){
@@ -138,7 +134,6 @@ require_once('../inc/header.inc.php');
 				<h1>Gestion des produits</h1>
 
 				<ul>
-					<li><a href="?action=affichage">Afficher les produits</a></li>
 					<li><a href="?action=ajout">Ajouter un produit</a></li>
 				</ul>
 				<hr><br>
@@ -151,68 +146,62 @@ require_once('../inc/header.inc.php');
 
 					<?php
 					if(isset($_GET['id_produit']) && is_numeric($_GET['id_produit'])){
-						$resultat = $pdo -> prepare("SELECT * FROM produit WHERE id_produit = :id_produit");
+						$resultat = $pdo -> prepare(
+              "SELECT p.*, s.photo, s.titre
+              FROM produit p, salle s
+              WHERE p.id_salle = s.id_salle
+              AND id_produit = $_GET[id_produit]"
+            );
 						$resultat -> bindParam(':id_produit', $_GET['id_produit'], PDO::PARAM_INT);
 						if($resultat -> execute()){
 							$produit_actuel = $resultat -> fetch(PDO::FETCH_ASSOC);
 							//produit_actuel est un array avec toutes les infos du produit à modifier
+
 						}
 					}
-
-					$id_salle = (isset($produit_actuel)) ? $produit_actuel['id_salle'] : '';
+          //debug($_GET['id_produit']);
+					$id_produit = (isset($produit_actuel)) ? $produit_actuel['id_produit'] : '';
+          $id_salle = (isset($produit_actuel)) ? $produit_actuel['id_salle'] : '';
 					$date_arrivee = (isset($produit_actuel)) ? $produit_actuel['date_arrivee'] : '';
 					$date_depart = (isset($produit_actuel)) ? $produit_actuel['date_depart'] : '';
 					$prix = (isset($produit_actuel)) ? $produit_actuel['prix'] : '';
 					$etat = (isset($produit_actuel)) ? $produit_actuel['etat'] : '';
+          $titre = (isset($produit_actuel)) ? $produit_actuel['titre'] : '';
 
-          $photo = (isset($salle_actuelle)) ? $salle_actuelle['photo'] : '';
+          $photo = (isset($produit_actuel)) ? $produit_actuel['photo'] : '';
 
 					$action = (isset($produit_actuel)) ? 'Modifier' : 'Ajouter' ;
-					$id_produit = (isset($produit_actuel)) ? $produit_actuel['id_produit'] : '';
 					 ?>
 
 
 				<form class="formulaire" action="" method="post">
 					<h2><?= $action ?> un produit</h2>
 					<!-- encrypt permet de recuperer les fichiers uploader grace à la superglobale $_file -->
-					<input type="hidden" name="id_salle" value="<?= $id_produit ?>">
+          <input type="hidden" name="id_produit" value="<?= $id_produit ?>">
 
-					<label>ID salle</label><br>
+          <label>Titre</label><br>
 					<input type="text" name="titre" value="<?= $titre ?>"><br>
 
-					<label>Description</label><br>
-					<textarea name="description" rows="8" cols="50"> <?= $description ?> </textarea><br>
+          <label>Date d'arrivée</label><br>
+					<input type="text" name="date_arrivee" value="<?= $date_arrivee ?>"><br>
 
-					<?php if(isset($salle_actuelle)) : ?>
-					<input type="hidden" name"photo_actuel" value="<?= $photo ?>" />
+          <label>Date de départ</label><br>
+					<input type="text" name="date_depart" value="<?= $date_depart ?>"><br>
+
+					<label>prix</label><br>
+					<input type="text" name="prix" value="<?= $prix ?>"><br>
+
+					<label>etat</label><br>
+					<input type="text" name="etat" value="<?= $etat ?>"><br>
+
+          <?php if(isset($salle_actuelle)) : ?>
+					<input type="hidden" name"photo_actuelle" value="<?= $photo ?>" />
 					<img src="<?= RACINE_SITE ?>photo/<?= $photo ?>" width="100" />
-					<?php endif; ?>
+					<?php endif; ?><br>
 
-					<label>pays</label><br>
-					<input type="text" name="pays" value="<?= $pays ?>"><br>
+          <input type="file" name="photo" /><br>
 
-					<label>Ville</label><br>
-					<input type="text" name="ville" value="<?= $ville ?>"><br>
-
-					<label>Adresse</label><br>
-					<input type="text" name="adresse" value="<?= $adresse ?>"><br>
-
-					<label>Code Postal</label><br>
-					<input type="text" name="cp" value="<?= $cp ?>"><br>
-
-					<label>Capacité</label><br>
-					<input type="text" name="capacite" value="<?= $capacite ?>"><br><br>
-
-					<label>Catégorie </label><br>
-						<select name="categorie">
-							<option>-- Selectionnez --</option>
-							<option <?= ($categorie == 'Réunion') ? 'selected' : '' ?> value="reunion">Réunion</option>
-							<option <?= ($categorie == 'Bureau') ? 'selected' : '' ?> value="bureau">Bureau</option>
-							<option <?= ($categorie == 'Formation') ? 'selected' : '' ?> value="formation">Formation</option>
-						</select><br/>
-
-
-						</select><br/><br>
+					<br/><br>
 
 					<input type="submit" value="<?= $action ?>">
 					<br><br>

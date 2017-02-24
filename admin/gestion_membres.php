@@ -1,3 +1,15 @@
+<script type="text/javascript">
+            function getConfirmation(){
+               var retVal = confirm("Etes vous certain ?");
+               if( retVal == true ){
+                  return true;
+               }
+               else{
+                  return false;
+               }
+            }
+</script>
+
 <?php
 require_once('../inc/init.inc.php');
 
@@ -6,9 +18,6 @@ if(!userAdmin()){
 }
 
 
-if(isset($_GET['action']) && $_GET['action'] == 'affichage'){
-	//si un affichage est demandé dans l'url, on recupère les infos de tous les produits
-	// et on les affiche via des boucles dans un tableau
 	$resultat= $pdo -> query("SELECT * FROM membre");
 
 	$contenu .= '<table border="1">';
@@ -30,13 +39,13 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage'){
 				}
 	  }
 			$contenu .= '<td><a href="?action=modifier&id_membre=' . $membre['id_membre'] .'"><img src ="' . RACINE_SITE . 'img/edit.png"/></a></td>';
-			$contenu .= '<td><a href="?action=supprimer&id_membre=' . $membre['id_membre'] .'"><img src ="' . RACINE_SITE . 'img/delete.png"/></a></td>';
+			$contenu .= '<td><a href="?action=supprimer&id_membre=' . $membre['id_membre'] .'" onclick="getConfirmation();"><img src ="' . RACINE_SITE . 'img/delete.png"/></a></td>';
 	  	$contenu .= '</tr>';
 	}
 
 		$contenu .= '</table>';
 
-}
+
 
 
 
@@ -47,15 +56,12 @@ if($_POST){
 	//debug($_FILES);
 
 
-
-	// enregistrement en base
-	// si c'est une modification on utilise REPLACE pour ajouter également l'id
 	if(isset($_GET['action']) && $_GET['action'] == 'modifier'){
-		$resultat = $pdo -> prepare("REPLACE INTO membre (id_membre, pseudo, mdp, nom, prenom, email, civilite, ville, code_postal, adresse, statut) VALUES (:id_membre, :pseudo, :mdp, :nom, :prenom, :email, :civilite, :ville, :code_postal, :adresse, :statut)");
+		$resultat = $pdo -> prepare("REPLACE INTO membre (id_membre, pseudo, mdp, nom, prenom, email, civilite, statut, date_enregistrement) VALUES (:id_membre, :pseudo, :mdp, :nom, :prenom, :email, :civilite, :statut, NOW())");
 		$resultat -> bindParam(':id_membre', $_POST['id_membre'], PDO::PARAM_INT);
 	}else{
 	//si c'est un ajout on utilise INSERT INTO sans s'occuper de l'id qui s'incrémente tout seul
-	$resultat = $pdo -> prepare("INSERT INTO membre (pseudo, mdp, nom, prenom, email, civilite, ville, code_postal, adresse, statut) VALUES (:pseudo, :mdp, :nom, :prenom, :email, :civilite, :ville, :code_postal, :adresse, :statut)");
+	$resultat = $pdo -> prepare("INSERT INTO membre (pseudo, mdp, nom, prenom, email, civilite, statut, date_enregistrement) VALUES (:pseudo, :mdp, :nom, :prenom, :email, :civilite, :statut, NOW())");
 
 	}
 
@@ -65,10 +71,7 @@ if($_POST){
 	$resultat -> bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
 	$resultat -> bindParam(':email', $_POST['email'], PDO::PARAM_STR);
 	$resultat -> bindParam(':civilite', $_POST['civilite'], PDO::PARAM_STR);
-	$resultat -> bindParam(':ville', $_POST['ville'], PDO::PARAM_STR);
-	$resultat -> bindParam(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-	//int
-	$resultat -> bindParam(':code_postal', $_POST['code_postal'], PDO::PARAM_INT);
+
 	$resultat -> bindParam(':statut', $_POST['statut'], PDO::PARAM_INT);
 
 	//on met le execute dans un if pour etre sur que les traitements contenus dans le if
@@ -115,11 +118,10 @@ require_once('../inc/header.inc.php');
 				<h1>Gestion des membres</h1>
 
 				<ul>
-					<li><a href="?action=affichage">Afficher les membres</a></li>
+					<!--<li><a href="?action=affichage">Afficher les membres</a></li>-->
 					<li><a href="?action=ajout">Ajouter un membre</a></li>
 				</ul>
 				<hr><br>
-				<?= $msg ?>
 				<?= $contenu ?>
 
 				<!-- ajouter et modifier un produit via formulaire
@@ -154,9 +156,9 @@ require_once('../inc/header.inc.php');
 
 					?>
 
-				<h2><?= $action ?> un membre</h2>
+
 				<form class="formulaire" action="" method="post">
-					<!-- encrypt permet de recuperer les fichiers uploader grace à la superglobale $_file -->
+          <h2><?= $action ?> un membre</h2>
 					<input type="hidden" name="id_membre" value="<?= $id_membre ?>">
 
 					<label>Pseudo</label><br>
@@ -172,7 +174,7 @@ require_once('../inc/header.inc.php');
 					<input type="text" name="prenom" value="<?= $prenom ?>"><br>
 
 					<label>Email</label><br>
-					<input type="text" name="email" value="<?= $email ?>"></textarea><br>
+					<input type="text" name="email" value="<?= $email ?>"></textarea><br><br>
 
 					<label>Civilite: </label>
 						<select name="civilite">

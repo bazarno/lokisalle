@@ -147,7 +147,9 @@ require_once('inc/header.inc.php');
               <?php endforeach; ?>
           </div>
       </div>
+
   </div>
+
 </div>
 </section>
 

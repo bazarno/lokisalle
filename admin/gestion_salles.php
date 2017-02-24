@@ -1,3 +1,14 @@
+<script type="text/javascript">
+            function getConfirmation(){
+               var retVal = confirm("Etes vous certain ?");
+               if( retVal == true ){
+                  return true;
+               }
+               else{
+                  return false;
+               }
+            }
+</script>
 <?php
 require_once('../inc/init.inc.php');
 
@@ -6,9 +17,6 @@ if(!userAdmin()){
 }
 
 
-if(isset($_GET['action']) && $_GET['action'] == 'affichage'){
-	//si un affichage est demandé dans l'url, on recupère les infos de tous les produits
-	// et on les affiche via des boucles dans un tableau
 	$resultat= $pdo -> query("SELECT * FROM salle");
 
 	$contenu .= '<table border="1">';
@@ -23,17 +31,18 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage'){
 	while($salle = $resultat -> fetch(PDO::FETCH_ASSOC)){
 	  	$contenu .= '<tr>';
 	  foreach ($salle as $indice => $valeur) {
-				$contenu.= '<td>' . $valeur . '</td>';
+      if($indice == 'photo'){
+        $contenu .='<td><img src ="../photo/' . $valeur . '" height="100"/></td>';
+      }else{
+        $contenu.= '<td>' . $valeur . '</td>';
+      }
 	  }
 			$contenu .= '<td><a href="?action=modifier&id_salle=' . $salle['id_salle'] .'"><img src ="' . RACINE_SITE . 'img/edit.png"/></a></td>';
-			$contenu .= '<td><a href="?action=supprimer&id_salle=' . $salle['id_salle'] .'"><img src ="' . RACINE_SITE . 'img/delete.png"/></a></td>';
+			$contenu .= '<td><a href="?action=supprimer&id_salle=' . $salle['id_salle'] .'" onclick="getConfirmation();" ><img src ="' . RACINE_SITE . 'img/delete.png"/></a></td>';
 	  	$contenu .= '</tr>';
 	}
 
 		$contenu .= '</table>';
-
-}
-
 
 
 // ajouter et modifier un produit via formulaire
@@ -100,11 +109,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'supprimer' ){
 			$salle = $resultat -> fetch(PDO::FETCH_ASSOC);
 			$resultat = $pdo -> exec("DELETE FROM salle WHERE id_salle = $salle[id_salle]");
 			if($resultat != FALSE){
-				$chemin_de_la_photo_a_supprimer = $_SERVER['DOCUMENT_ROOT'] . RACINE_SITE . 'photo/' . $produit['photo'];
-
-				if(file_exists($chemin_de_la_photo_a_supprimer) && $produit['photo'] != 'default.jpg'){
-					unlink($chemin_de_la_photo_a_supprimer);
-				}
 				$_GET['action'] = 'affichage';
 				$msg .= '<dic class="validation">La salle N° ' . $salle['id_salle'] . 'a bien été supprimée</div>';
 			}
@@ -112,8 +116,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'supprimer' ){
 	}
 }
 
-
-//redirection si pas admin
 
 require_once('../inc/header.inc.php');
 
@@ -126,11 +128,9 @@ require_once('../inc/header.inc.php');
 				<h1>Gestion des salles</h1>
 
 				<ul>
-					<li><a href="?action=affichage">Afficher les salles</a></li>
 					<li><a href="?action=ajout">Ajouter une salle</a></li>
 				</ul>
 				<hr><br>
-				<?= $msg ?>
 				<?= $contenu ?>
 
 				<!-- ajouter et modifier un produit via formulaire
@@ -160,11 +160,11 @@ require_once('../inc/header.inc.php');
 
 					$action = (isset($salle_actuelle)) ? 'Modifier' : 'Ajouter' ;
 					$id_salle = (isset($salle_actuelle)) ? $salle_actuelle['id_salle'] : '';
-
-
 					 ?>
-				<h2><?= $action ?> une salle</h2>
+
+
 				<form class="formulaire" action="" method="post">
+					<h2><?= $action ?> une salle</h2>
 					<!-- encrypt permet de recuperer les fichiers uploader grace à la superglobale $_file -->
 					<input type="hidden" name="id_salle" value="<?= $id_salle ?>">
 
@@ -175,9 +175,11 @@ require_once('../inc/header.inc.php');
 					<textarea name="description" rows="8" cols="50"> <?= $description ?> </textarea><br>
 
 					<?php if(isset($salle_actuelle)) : ?>
-					<input type="hidden" name"photo_actuel" value="<?= $photo ?>" />
-					<img src="<?= RACINE_SITE ?>photo/<?= $photo ?>" width="100" />
-					<?php endif; ?>
+					<input type="hidden" name"photo_actuelle" value="<?= $photo ?>" />
+					<img src="<?= RACINE_SITE ?>photo/<?= $photo ?>" width="150" /><br>
+					<?php endif; ?><br>
+
+          <input type="file" name="photo" /><br>
 
 					<label>pays</label><br>
 					<input type="text" name="pays" value="<?= $pays ?>"><br>

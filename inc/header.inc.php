@@ -50,6 +50,7 @@
                   <li>
                     <a href="<?php echo RACINE_SITE; ?>contact.php">Contact</a>
                   </li>
+
                   <?php if(userConnecte()):?>
                   <li>
                     <a href="<?php echo RACINE_SITE; ?>profil.php">Profil</a>
@@ -68,20 +69,26 @@
                   </li>
                     <?php endif; ?>
                     <?php if(userAdmin()):?>
-                  <li>
-                    <a href="<?php echo RACINE_SITE; ?>admin/gestion_salles.php">Gestion des salles</a>
-                  </li>
-                  <li>
-                    <a href="<?php echo RACINE_SITE; ?>admin/gestion_produits.php">Gestion des produits</a>
-                  </li>
-                  <li>
-                    <a href="<?php echo RACINE_SITE; ?>admin/gestion_membres.php">Gestion des membres</a>
-                  </li>
-                  <li>
-                    <a href="<?php echo RACINE_SITE; ?>admin/gestion_avis.php">Gestion des avis</a>
-                  </li>
+                      <ul class="nav navbar-nav navbar-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gestion du site <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a href="<?php echo RACINE_SITE; ?>admin/gestion_salles.php">Gestion des salles</a>
+                          </li>
+                          <li>
+                            <a href="<?php echo RACINE_SITE; ?>admin/gestion_produits.php">Gestion des produits</a>
+                          </li>
+                          <li>
+                            <a href="<?php echo RACINE_SITE; ?>admin/gestion_membres.php">Gestion des membres</a>
+                          </li>
+                          <li>
+                            <a href="<?php echo RACINE_SITE; ?>admin/gestion_avis.php">Gestion des avis</a>
+                          </li>
+                        </ul>
+                      <?php endif; ?>
 									<li><?php echo $msg; ?></li>
-                  <?php endif; ?>
+
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
